@@ -21,11 +21,8 @@
   <div class="main_wrap">
     <div class="header">
       <a href="#" class="logo"><img src="images/logo.png" alt="" /></a>
-      <div class="copyright">
-        CopyRight © 2019 深圳百秀信息技术股份有限公司<br />All Rights Reserved
-      </div>
+      <div class="copyright"> CopyRight © 2019 深圳百秀信息技术股份有限公司<br />All Rights Reserved </div>
     </div>
-
     <div class="login_form_con">
       <div class="login_title"></div>
       <form class="login_form">
@@ -37,7 +34,76 @@
       </form>
     </div>
   </div>
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"> Launch demo modal
+  </button>
+  <!-- Modal Bootstrap模态框代码 -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">温馨提示</h4>
+        </div>
+        <div class="modal-body"> ... </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+          <!-- <button type="button" class="btn btn-primary">确定</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+   <!-- 引入封装基地址的JS文件 -->
+   <script src="./libs/http.js"></script>
+  <script>
+    $(function () {
+      //入口函数
+      $('.input_sub').on('click', function (e) {
+        //阻止默认跳转
+        e.preventDefault();
+        let usrName = $('.input_txt').val().trim();
+        let passWord = $('.input_pass').val().trim();
+        //非空判断
+        if (usrName == '' || passWord == '') {
+          $('.modal-body').text('用户名或者密码不能为空');
+          $('#myModal').modal();
 
+          // alert('用户名或者密码不能为空');
+          return;
+        }
+        //发送AJAX请求
+        $.ajax({
+          type: 'post',
+          url: BigNew.user_login,
+          data: {
+            username: usrName,
+            password: passWord,
+          },
+          success: function (backData) {
+            if (backData.code == 400) {
+              $('.modal-body').text(backData.msg);
+              $('#myModal').modal();
+              // alert(backData.msg);
+            } else if (backData.code == 200) {
+              $('.modal-body').text(backData.msg);
+              $('#myModal').modal();
+              // alert(backData.msg);
+              $('#myModal').on('hidden.bs.modal', function (e) {
+                localStorage.setItem('token',backData.token);
+                // do something...
+                window.location.href = './index.html';
+              })
+             
+            }
+
+          }
+
+        })
+
+      })
+    })
+  </script>
 </body>
 
 </html>
