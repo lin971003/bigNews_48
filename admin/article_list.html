@@ -91,7 +91,7 @@
             <td class="text-center">{{v.date}}</td>
             <td class="text-center">{{v.state}}</td>
             <td class="text-center">
-                <a href="article_edit.html" class="btn btn-default btn-xs" data-id="{{v.id}}" >编辑</a>
+                <a href="article_edit.html?id={{v.id}}" class="btn btn-default btn-xs" data-id="{{v.id}}" >编辑</a>
                 <a href="javascript:void(0);" class="btn btn-danger btn-xs delete" data-id="{{v.id}}">删除</a>
             </td>
         </tr>
@@ -206,7 +206,7 @@
                         type: $('#selCategory').val(),   //文章类型id，可以为空，为空返回所有类型文章
                         state: $('#selStatus').val(),    //文章状态，草稿 ，已发布,为空返回所有状态文章
                         page: myPage,                         //当前页，为空返回第1页       
-                        perpage: 2,                      //每页显示条数，为空默认每页6条
+                        perpage: 6,                      //每页显示条数，为空默认每页6条
                     },
                     success: function (backData) {
                         // console.log(backData);
