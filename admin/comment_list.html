@@ -205,12 +205,14 @@
               //生成分页结构 用一个回调函数封装起来
               if (callback != null && backData.data.data.length != 0) {
                 callback(backData);
-              } else if (backData.data.totalPage == myPage - 1) {
+              } else if (backData.data.totalPage == myPage - 1  && myPage!=1) {
                     myPage -= 1;
                   //第一个参数是事件名
                   //第二个参数是改变后的页码总数
                   //第三个参数是当前要显示的页码
                   $('#pagination').twbsPagination('changeTotalPages', backData.data.totalPage, myPage);
+              }else if (backData.data.totalPage==0 ){
+                $('tbody').html('没有数据哦！！');
               }
             }
           }
@@ -289,7 +291,7 @@
               id: id
             },
             success: function (backData) {
-              console.log(backData);
+              // console.log(backData);
               if (backData.code == 200) {
                 alert('删除成功！！');
                 getData(myPage,function(backData){
