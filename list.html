@@ -227,6 +227,74 @@
     </div>
     <!-- 导包template -->
     <script src="./js/template-web.js"></script>
+    <!-- 制作列表模板引擎 -->
+    <script id="tempSearch" type="text/html">
+        {{each data.data v}}
+        <div class="common_news_list">
+            <a href="./article.html?id={{v.id}}" class="list_pic"><img src="{{v.cover}}" alt=""></a>
+            <h4><a href="./article.html?id={{v.id}}">{{v.title}}</a></h4>
+            <p>{{v.intro}} </p>
+            <div class="new_info">
+                <span>标签：{{v.category}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读(  {{v.read}} )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( {{v.comments}} )</span>
+                <b>发布于 {{v.date}}</b>
+            </div>
+        </div>
+        {{/each}}
+    </script>
+
+    <script>
+        $(function(){
+            //获取地址栏传过来的值并打印
+            let val1 = window.location.search.split('=')[0];
+            let val2 = window.location.search.split('=')[1];
+            // console.log(val1);
+            console.log(val2);
+            //根据val1的值判断是从搜索按钮进来的页面还是其他的
+            if(val1=='?search'){
+                //此处是从搜索关键词进来页面的  
+                // console.log(decodeURI(val2));
+                $.ajax({
+                    type:'get',
+                    url:'http://localhost:8080/api/v1/index/search',
+                    data:{
+                        key:decodeURI(val2),
+                    },
+                    success:function(backData){
+                       if(backData.code==200){
+                        let res = '<div class="list_title"> <h3>搜索结果:'+decodeURI(val2)+'</h3> </div>'
+                        res += template('tempSearch',backData)
+                         $('.left_con').html(res);
+                       }
+                        
+                    }
+                });
+                
+            }else if(val1=='?id'){
+                //此处是通过id进来页面的
+                $.ajax({
+                    type:'get',
+                    url:'http://localhost:8080/api/v1/index/search',
+                    data:{
+                        type:val2,
+                    },
+                    success:function(backData){
+                        console.log(backData);
+                        
+                        if(backData.code==200 && backData.data.data.length !=0){
+                        let res = '<div class="list_title"> <h3>'+backData.data.data[0].category+'</h3> </div>'
+                        res += template('tempSearch',backData)
+                         $('.left_con').html(res);
+                       }else{
+                        $('.left_con').html('没有数据！！！');
+                       } 
+                    }
+                });
+            }else if(val1 == ''){
+                window.location.href='./index.html';
+            }
+            
+        })
+    </script>
 </body>
 
 </html>

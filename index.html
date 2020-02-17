@@ -397,7 +397,16 @@
                 }
             });   
         
-        
+        //7.点击搜索按钮
+        $('.search_btn').on('click',function(){
+            let search =$('.search_txt').val().trim();
+            // console.log(search);
+            if(search==''){
+                alert('搜索的关键词为空！！！');
+            }else{
+                window.location.href='./list.html?search='+search;
+            }
+        });
 
      });
     </script>
